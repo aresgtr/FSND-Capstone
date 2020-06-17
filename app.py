@@ -219,6 +219,41 @@ def create_app(test_config=None):
             'num_of_games': len(transaction_query)
         })
 
+    @app.route('/transactions', methods=['POST'])
+    def insert_transaction():
+        body = request.get_json()
+
+        time = body.get('time_of_transaction', None)
+        amount = body.get('amount', None)
+        game_id = body.get('game_id', None)
+        customer_id = body.get('customer_id', None)
+
+        if (time is None) or (amount is None) or (game_id is None) or (customer_id is None):
+            abort(422)
+
+        review = body.get('review', None)
+
+        game = Game.query.filter(Game.id == game_id).one_or_none()
+        customer = Customer.query.filter(Customer.id == customer_id).one_or_none()
+
+        if (game is None) or (customer is None):
+            abort(422)
+
+        transaction = Transaction(
+            time_of_transaction=time,
+            amount=amount,
+            review=review,
+            game=game,
+            customer=customer)
+
+        try:
+            transaction.insert()
+
+            return retrieve_transactions()
+
+        except:
+            abort(422)
+
     return app
 
 
