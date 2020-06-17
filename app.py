@@ -58,6 +58,46 @@ def create_app(test_config=None):
         except:
             abort(422)
 
+    @app.route('/games/<int:id>', methods=['PATCH'])
+    def update_game(id):
+        game = Game.query.filter(Game.id == id).one_or_none()
+
+        if game is None:
+            abort(404)
+
+        body = request.get_json()
+        name = body.get('name', None)
+        developers = body.get('developers', None)
+        publishers = body.get('publishers', None)
+        release_date = body.get('release_date', None)
+        platforms = body.get('platforms', None)
+        review_score = body.get('review_score', None)
+        genre = body.get('genre', None)
+
+        if name:
+            game.name = name
+
+        if developers:
+            game.developers = developers
+
+        if publishers:
+            game.publishers = publishers
+
+        if release_date:
+            game.release_date = release_date
+
+        if platforms:
+            game.platforms = platforms
+
+        if review_score:
+            game.review_score = review_score
+
+        if genre:
+            game.genre = genre
+
+        game.update()
+        return retrieve_games()
+
     @app.route('/games/<int:id>', methods=['DELETE'])
     def delete_game(id):
         game = Game.query.filter(Game.id == id).one_or_none()
