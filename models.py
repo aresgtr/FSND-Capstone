@@ -9,10 +9,10 @@ from datetime import datetime
 import dateutil.parser
 import babel
 
-app = Flask(__name__)
-app.config.from_object(Config)
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
+# app = Flask(__name__)
+# app.config.from_object(Config)
+db = SQLAlchemy()
+# migrate = Migrate(app, db)
 
 # TODO: will be replaced by Heroku
 database_path = 'postgresql://postgres:password@localhost:5432/capstone'
@@ -162,13 +162,13 @@ class Transaction(db.Model):
 # Filters.
 # ----------------------------------------------------------------------------#
 
-def format_datetime(value, format='medium'):
-    date = dateutil.parser.parse(value)
-    if format == 'full':
-        format = "EEEE MMMM, d, y 'at' h:mma"
-    elif format == 'medium':
-        format = "EE MM, dd, y h:mma"
-    return babel.dates.format_datetime(date, format)
-
-
-app.jinja_env.filters['datetime'] = format_datetime
+# def format_datetime(value, format='medium'):
+#     date = dateutil.parser.parse(value)
+#     if format == 'full':
+#         format = "EEEE MMMM, d, y 'at' h:mma"
+#     elif format == 'medium':
+#         format = "EE MM, dd, y h:mma"
+#     return babel.dates.format_datetime(date, format)
+#
+#
+# db.app.jinja_env.filters['datetime'] = format_datetime
