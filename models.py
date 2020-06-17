@@ -37,7 +37,7 @@ class Game(db.Model):
     publishers = Column(ARRAY(String))
     release_date = Column(DateTime())
     platforms = Column(ARRAY(String))
-    review_score = Column(Integer)
+    review_score = Column(Float)
     genre = Column(ARRAY(String))
     transaction = db.relationship("Transaction", backref="Game", lazy='dynamic')
 
