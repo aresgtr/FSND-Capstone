@@ -58,6 +58,21 @@ def create_app(test_config=None):
         except:
             abort(422)
 
+    @app.route('/games/<int:id>', methods=['DELETE'])
+    def delete_game(id):
+        game = Game.query.filter(Game.id == id).one_or_none()
+
+        if game is None:
+            abort(404)
+
+        try:
+            game.delete()
+
+            return retrieve_games()
+
+        except:
+            abort(422)
+
     return app
 
 
