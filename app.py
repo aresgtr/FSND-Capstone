@@ -207,6 +207,18 @@ def create_app(test_config=None):
         except:
             abort(422)
 
+    @app.route('/transactions')
+    def retrieve_transactions():
+        transaction_query = Transaction.query.order_by(Transaction.id).all()
+
+        transactions = [transaction.format() for transaction in transaction_query]
+
+        return jsonify({
+            'success': True,
+            'transactions': transactions,
+            'num_of_games': len(transaction_query)
+        })
+
     return app
 
 
