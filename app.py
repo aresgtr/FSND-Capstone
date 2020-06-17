@@ -192,6 +192,21 @@ def create_app(test_config=None):
         customer.update()
         return retrieve_customers()
 
+    @app.route('/customers/<int:id>', methods=['DELETE'])
+    def delete_customer(id):
+        customer = Customer.query.filter(Customer.id == id).one_or_none()
+
+        if customer is None:
+            abort(404)
+
+        try:
+            customer.delete()
+
+            return retrieve_customers()
+
+        except:
+            abort(422)
+
     return app
 
 
