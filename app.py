@@ -113,6 +113,18 @@ def create_app(test_config=None):
         except:
             abort(422)
 
+    @app.route('/customers')
+    def retrieve_customers():
+        customer_query = Customer.query.order_by(Customer.id).all()
+
+        customers = [customer.format() for customer in customer_query]
+
+        return jsonify({
+            'success': True,
+            'customers': customers,
+            'num_of_customers': len(customer_query)
+        })
+
     return app
 
 
