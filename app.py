@@ -156,6 +156,42 @@ def create_app(test_config=None):
         except:
             abort(422)
 
+    @app.route('/customers/<int:id>', methods=['PATCH'])
+    def update_customer(id):
+        customer = Customer.query.filter(Customer.id == id).one_or_none()
+
+        if customer is None:
+            abort(404)
+
+        body = request.get_json()
+        first_name = body.get('first_name', None)
+        last_name = body.get('last_name', None)
+        email = body.get('email', None)
+        phone = body.get('phone', None)
+        country = body.get('country', None)
+        state = body.get('state', None)
+
+        if first_name:
+            customer.first_name = first_name
+
+        if last_name:
+            customer.last_name = last_name
+
+        if email:
+            customer.email = email
+
+        if phone:
+            customer.phone = phone
+
+        if country:
+            customer.country = country
+
+        if state:
+            customer.state = state
+
+        customer.update()
+        return retrieve_customers()
+
     return app
 
 
