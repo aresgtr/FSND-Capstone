@@ -125,6 +125,37 @@ def create_app(test_config=None):
             'num_of_customers': len(customer_query)
         })
 
+    @app.route('/customers', methods=['POST'])
+    def insert_customer():
+        body = request.get_json()
+
+        first_name = body.get('first_name', None)
+        last_name = body.get('last_name', None)
+
+        if (first_name is None) or (last_name is None):
+            abort(422)
+
+        email = body.get('email', None)
+        phone = body.get('phone', None)
+        country = body.get('country', None)
+        state = body.get('state', None)
+
+        customer = Customer(
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            phone=phone,
+            country=country,
+            state=state)
+
+        try:
+            customer.insert()
+
+            return retrieve_customers()
+
+        except:
+            abort(422)
+
     return app
 
 
