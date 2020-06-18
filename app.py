@@ -3,6 +3,7 @@ from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from models import setup_db, Game, Customer, Transaction
+from auth.auth import AuthError, requires_auth
 
 
 # TODO: paginate
@@ -26,7 +27,10 @@ def create_app(test_config=None):
         })
 
     @app.route('/games', methods=['POST'])
-    def insert_game():
+    @requires_auth('post:games')
+    def insert_game(payload):
+        print(payload)
+        
         body = request.get_json()
 
         name = body.get('name', None)
@@ -59,7 +63,10 @@ def create_app(test_config=None):
             abort(422)
 
     @app.route('/games/<int:id>', methods=['PATCH'])
-    def update_game(id):
+    @requires_auth('patch:games')
+    def update_game(payload, id):
+        print(payload)
+
         game = Game.query.filter(Game.id == id).one_or_none()
 
         if game is None:
@@ -99,7 +106,10 @@ def create_app(test_config=None):
         return retrieve_games()
 
     @app.route('/games/<int:id>', methods=['DELETE'])
-    def delete_game(id):
+    @requires_auth('delete:games')
+    def delete_game(payload, id):
+        print(payload)
+
         game = Game.query.filter(Game.id == id).one_or_none()
 
         if game is None:
@@ -114,7 +124,10 @@ def create_app(test_config=None):
             abort(422)
 
     @app.route('/customers')
-    def retrieve_customers():
+    @requires_auth('get:customers')
+    def retrieve_customers(payload):
+        print(payload)
+
         customer_query = Customer.query.order_by(Customer.id).all()
 
         customers = [customer.format() for customer in customer_query]
@@ -126,7 +139,10 @@ def create_app(test_config=None):
         })
 
     @app.route('/customers', methods=['POST'])
-    def insert_customer():
+    @requires_auth('post:customers')
+    def insert_customer(payload):
+        print(payload)
+
         body = request.get_json()
 
         first_name = body.get('first_name', None)
@@ -157,7 +173,10 @@ def create_app(test_config=None):
             abort(422)
 
     @app.route('/customers/<int:id>', methods=['PATCH'])
-    def update_customer(id):
+    @requires_auth('patch:customers')
+    def update_customer(payload, id):
+        print(payload)
+
         customer = Customer.query.filter(Customer.id == id).one_or_none()
 
         if customer is None:
@@ -193,7 +212,10 @@ def create_app(test_config=None):
         return retrieve_customers()
 
     @app.route('/customers/<int:id>', methods=['DELETE'])
-    def delete_customer(id):
+    @requires_auth('delete:customers')
+    def delete_customer(payload, id):
+        print(payload)
+
         customer = Customer.query.filter(Customer.id == id).one_or_none()
 
         if customer is None:
@@ -208,7 +230,10 @@ def create_app(test_config=None):
             abort(422)
 
     @app.route('/transactions')
-    def retrieve_transactions():
+    @requires_auth('get:transactions')
+    def retrieve_transactions(payload):
+        print(payload)
+
         transaction_query = Transaction.query.order_by(Transaction.id).all()
 
         transactions = [transaction.format() for transaction in transaction_query]
@@ -220,7 +245,10 @@ def create_app(test_config=None):
         })
 
     @app.route('/transactions', methods=['POST'])
-    def insert_transaction():
+    @requires_auth('post:transactions')
+    def insert_transaction(payload):
+        print(payload)
+
         body = request.get_json()
 
         time = body.get('time_of_transaction', None)
