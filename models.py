@@ -1,10 +1,11 @@
+import os
 from sqlalchemy import Column, Integer, String, DateTime, ARRAY, Float
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
-# TODO: will be replaced by Heroku
-database_path = 'postgresql://postgres:password@localhost:5432/capstone'
+# database_path = 'postgresql://postgres:password@localhost:5432/capstone'
+database_path = os.environ['DATABASE_URL']
 
 db = SQLAlchemy()
 
