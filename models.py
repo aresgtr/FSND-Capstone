@@ -1,18 +1,7 @@
 from sqlalchemy import Column, Integer, String, DateTime, ARRAY, Float
 from flask_sqlalchemy import SQLAlchemy
-import json
-import os
-from flask import Flask
-from config import Config
-from flask_migrate import Migrate
-from datetime import datetime
-import dateutil.parser
-import babel
 
-# app = Flask(__name__)
-# app.config.from_object(Config)
 db = SQLAlchemy()
-# migrate = Migrate(app, db)
 
 # TODO: will be replaced by Heroku
 database_path = 'postgresql://postgres:password@localhost:5432/capstone'
@@ -155,20 +144,3 @@ class Transaction(db.Model):
             'game_id': self.game_id,
             'customer_id': self.customer_id
         }
-
-
-# From project "fyyur"
-# ----------------------------------------------------------------------------#
-# Filters.
-# ----------------------------------------------------------------------------#
-
-# def format_datetime(value, format='medium'):
-#     date = dateutil.parser.parse(value)
-#     if format == 'full':
-#         format = "EEEE MMMM, d, y 'at' h:mma"
-#     elif format == 'medium':
-#         format = "EE MM, dd, y h:mma"
-#     return babel.dates.format_datetime(date, format)
-#
-#
-# db.app.jinja_env.filters['datetime'] = format_datetime
