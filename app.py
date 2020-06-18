@@ -6,8 +6,6 @@ from models import setup_db, Game, Customer, Transaction
 from auth.auth import AuthError, requires_auth
 
 
-# TODO: paginate
-
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__)
@@ -30,7 +28,7 @@ def create_app(test_config=None):
     @requires_auth('post:games')
     def insert_game(payload):
         print(payload)
-        
+
         body = request.get_json()
 
         name = body.get('name', None)
@@ -241,7 +239,7 @@ def create_app(test_config=None):
         return jsonify({
             'success': True,
             'transactions': transactions,
-            'num_of_games': len(transaction_query)
+            'num_of_transactions': len(transaction_query)
         })
 
     @app.route('/transactions', methods=['POST'])
@@ -281,6 +279,48 @@ def create_app(test_config=None):
 
         except:
             abort(422)
+
+    # Error Handling
+
+    @app.errorhandler(400)
+    def bad_request(error):
+        return jsonify({
+            'success': False,
+            'error': 400,
+            'message': 'bad request'
+        }), 400
+
+    @app.errorhandler(404)
+    def not_found(error):
+        return jsonify({
+            "success": False,
+            "error": 404,
+            "message": "not found"
+        }), 404
+
+    @app.errorhandler(422)
+    def unprocessable(error):
+        return jsonify({
+            "success": False,
+            "error": 422,
+            "message": "unprocessable"
+        }), 422
+
+    @app.errorhandler(500)
+    def internal_error(error):
+        return jsonify({
+            "success": False,
+            "error": 500,
+            "message": "internal server error"
+        }), 500
+
+    @app.errorhandler(AuthError)
+    def auth_error(AuthError):
+        return jsonify({
+            "success": False,
+            "error": AuthError.status_code,
+            'message': 'action not permitted or authentication fails'
+        }), AuthError.status_code
 
     return app
 

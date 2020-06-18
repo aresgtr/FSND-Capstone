@@ -1,0 +1,260 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 12.2 (Ubuntu 12.2-4)
+-- Dumped by pg_dump version 12.2 (Ubuntu 12.2-4)
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: Customer; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public."Customer" (
+    id integer NOT NULL,
+    first_name character varying,
+    last_name character varying,
+    email character varying,
+    phone character varying,
+    country character varying,
+    state character varying
+);
+
+
+ALTER TABLE public."Customer" OWNER TO postgres;
+
+--
+-- Name: Customer_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public."Customer_id_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."Customer_id_seq" OWNER TO postgres;
+
+--
+-- Name: Customer_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public."Customer_id_seq" OWNED BY public."Customer".id;
+
+
+--
+-- Name: Game; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public."Game" (
+    id integer NOT NULL,
+    name character varying,
+    developers character varying[],
+    publishers character varying[],
+    release_date timestamp without time zone,
+    platforms character varying[],
+    review_score double precision,
+    genre character varying[]
+);
+
+
+ALTER TABLE public."Game" OWNER TO postgres;
+
+--
+-- Name: Game_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public."Game_id_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."Game_id_seq" OWNER TO postgres;
+
+--
+-- Name: Game_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public."Game_id_seq" OWNED BY public."Game".id;
+
+
+--
+-- Name: Transaction; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public."Transaction" (
+    id integer NOT NULL,
+    time_of_transaction timestamp without time zone,
+    amount double precision,
+    review character varying,
+    game_id integer NOT NULL,
+    customer_id integer NOT NULL
+);
+
+
+ALTER TABLE public."Transaction" OWNER TO postgres;
+
+--
+-- Name: Transaction_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public."Transaction_id_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."Transaction_id_seq" OWNER TO postgres;
+
+--
+-- Name: Transaction_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public."Transaction_id_seq" OWNED BY public."Transaction".id;
+
+
+--
+-- Name: Customer id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Customer" ALTER COLUMN id SET DEFAULT nextval('public."Customer_id_seq"'::regclass);
+
+
+--
+-- Name: Game id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Game" ALTER COLUMN id SET DEFAULT nextval('public."Game_id_seq"'::regclass);
+
+
+--
+-- Name: Transaction id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Transaction" ALTER COLUMN id SET DEFAULT nextval('public."Transaction_id_seq"'::regclass);
+
+
+--
+-- Data for Name: Customer; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public."Customer" (id, first_name, last_name, email, phone, country, state) FROM stdin;
+1	Tom	Jerry	tom.j@example.com	123-456-7890	Canada	British Columbia
+2	Foo	Bar	foo.b@example.com	987-654-3210	United States	New York
+3	Ming	Li	ming.l@example.com	13000000000	China	Heilongjiang
+\.
+
+
+--
+-- Data for Name: Game; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public."Game" (id, name, developers, publishers, release_date, platforms, review_score, genre) FROM stdin;
+1	Animal Crossing: New Horizons	\N	{Nintendo}	2020-03-20 00:00:00	{"Nintendo Switch"}	9	{Simulation}
+2	Grand Theft Auto V	{"Rockstar North","Rockstar Games"}	{"Rockstar Games"}	2013-09-17 00:00:00	{"Xbox 360","PlayStation 3","PlayStation 4","Xbox One",PC,"PlayStation 5"}	10	{Action,Adventure}
+3	Forza Horizon 4	{"Turn 10 Studios","Playground Games"}	{Microsoft}	2018-10-02 00:00:00	{"Xbox One",PC}	9.6	{Racing}
+4	Cities: Skylines	{Tantalus,"Colossal Order"}	{"Paradox Interactive"}	2015-03-10 00:00:00	{PC,Linux,Macintosh,"Xbox One","PlayStation 4","Nintendo Switch"}	8.5	{Simulation}
+5	Command & Conquer: Yuri's Revenge -- Red Alert 2 Expansion	{"Westwood Studios"}	{"Electronic Arts",Fillpoint}	2001-10-09 00:00:00	{PC}	8.6	{Strategy}
+\.
+
+
+--
+-- Data for Name: Transaction; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public."Transaction" (id, time_of_transaction, amount, review, game_id, customer_id) FROM stdin;
+1	2018-01-01 00:00:00	69.99	This game is interesting!	2	1
+2	2019-05-01 00:00:00	79.99	This is the best game ever!	4	2
+3	2020-04-17 00:00:00	89.99	\N	1	3
+\.
+
+
+--
+-- Name: Customer_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public."Customer_id_seq"', 3, true);
+
+
+--
+-- Name: Game_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public."Game_id_seq"', 5, true);
+
+
+--
+-- Name: Transaction_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public."Transaction_id_seq"', 3, true);
+
+
+--
+-- Name: Customer Customer_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Customer"
+    ADD CONSTRAINT "Customer_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: Game Game_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Game"
+    ADD CONSTRAINT "Game_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: Transaction Transaction_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Transaction"
+    ADD CONSTRAINT "Transaction_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: Transaction Transaction_customer_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Transaction"
+    ADD CONSTRAINT "Transaction_customer_id_fkey" FOREIGN KEY (customer_id) REFERENCES public."Customer"(id);
+
+
+--
+-- Name: Transaction Transaction_game_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Transaction"
+    ADD CONSTRAINT "Transaction_game_id_fkey" FOREIGN KEY (game_id) REFERENCES public."Game"(id);
+
+
+--
+-- PostgreSQL database dump complete
+--
+
