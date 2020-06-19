@@ -33,17 +33,17 @@ def create_app(test_config=None):
 
         body = request.get_json()
 
-        name = body.get('name', None)
+        name = body.get('name')
 
         if name is None:
             abort(422)
 
-        developers = body.get('developers', None)
-        publishers = body.get('publishers', None)
-        release_date = body.get('release_date', None)
-        platforms = body.get('platforms', None)
-        review_score = body.get('review_score', None)
-        genre = body.get('genre', None)
+        developers = body.get('developers')
+        publishers = body.get('publishers')
+        release_date = body.get('release_date')
+        platforms = body.get('platforms')
+        review_score = body.get('review_score')
+        genre = body.get('genre')
 
         game = Game(
             name=name,
@@ -73,13 +73,13 @@ def create_app(test_config=None):
             abort(404)
 
         body = request.get_json()
-        name = body.get('name', None)
-        developers = body.get('developers', None)
-        publishers = body.get('publishers', None)
-        release_date = body.get('release_date', None)
-        platforms = body.get('platforms', None)
-        review_score = body.get('review_score', None)
-        genre = body.get('genre', None)
+        name = body.get('name')
+        developers = body.get('developers')
+        publishers = body.get('publishers')
+        release_date = body.get('release_date')
+        platforms = body.get('platforms')
+        review_score = body.get('review_score')
+        genre = body.get('genre')
 
         if name:
             game.name = name
@@ -145,16 +145,16 @@ def create_app(test_config=None):
 
         body = request.get_json()
 
-        first_name = body.get('first_name', None)
-        last_name = body.get('last_name', None)
+        first_name = body.get('first_name')
+        last_name = body.get('last_name')
 
         if (first_name is None) or (last_name is None):
             abort(422)
 
-        email = body.get('email', None)
-        phone = body.get('phone', None)
-        country = body.get('country', None)
-        state = body.get('state', None)
+        email = body.get('email')
+        phone = body.get('phone')
+        country = body.get('country')
+        state = body.get('state')
 
         customer = Customer(
             first_name=first_name,
@@ -183,12 +183,12 @@ def create_app(test_config=None):
             abort(404)
 
         body = request.get_json()
-        first_name = body.get('first_name', None)
-        last_name = body.get('last_name', None)
-        email = body.get('email', None)
-        phone = body.get('phone', None)
-        country = body.get('country', None)
-        state = body.get('state', None)
+        first_name = body.get('first_name')
+        last_name = body.get('last_name')
+        email = body.get('email')
+        phone = body.get('phone')
+        country = body.get('country')
+        state = body.get('state')
 
         if first_name:
             customer.first_name = first_name
@@ -252,10 +252,10 @@ def create_app(test_config=None):
 
         body = request.get_json()
 
-        time = body.get('time_of_transaction', None)
-        amount = body.get('amount', None)
-        game_id = body.get('game_id', None)
-        customer_id = body.get('customer_id', None)
+        time = body.get('time_of_transaction')
+        amount = body.get('amount')
+        game_id = body.get('game_id')
+        customer_id = body.get('customer_id')
 
         if (time is None) or (amount is None) or (game_id is None) or (
                 customer_id is None):
