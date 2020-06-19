@@ -18,6 +18,51 @@ This capstone project demonstrates the skills of:
 - Testing Flask Application with Python UnitTests
 - Deploying Application with Heroku
 
+## Getting Started
+
+### Installing Dependencies
+
+Note that the project is now hosting on Heroku. Dependency installation is not required unless you want to test the project locally.
+
+#### Python 3.8
+
+#### PIP Dependencies
+```
+pip install -r requirements.txt
+```
+Depending on your python version, you might want to use pip3 instead of pip.
+
+### PostgreSQL
+
+To test locally, PostgreSQL should be installed and running. `capstone` database need to be created before running the project.
+
+#### Running the server locally
+
+In models.py, uncomment the first line below and comment out the second line, to define local database path.
+
+```python
+# database_path = 'postgresql://postgres:password@localhost:5432/capstone'
+database_path = os.environ['DATABASE_URL']
+```
+
+To run the server, execute:
+
+```
+export FLASK_APP=app.py
+export FLASK_ENV=development
+flask run
+```
+
+#### Running the tests locally
+
+```
+dropdb capstone_test
+createdb capstone_test
+psql capstone_test < capstone_test.psql
+python test_app.py
+```
+Depending on your python version, you might want to use python3 instead of python.
+
 ## API Reference
 
 ### Base URL for this project
@@ -26,13 +71,23 @@ This capstone project demonstrates the skills of:
 
 Please note there is no frontend configured for this project. Please use `curl` or Postman to interact with the endpoints.
 
-## Authentication
+If you want to test APIs locally, use `http://localhost:5000/`
+
+## Third-Party Authentication
 
 This project uses Auth0 for third-party authentication services. Please refer to this link to register accounts for authentication jwt tokens.
 
 `https://zhangqi.auth0.com/authorize?audience=capstone&response_type=token&client_id=0ULSCgsC3dU8F9PsoRi7na3z4SW1AiLD&redirect_uri=http://127.0.0.1:8080/login-results`
 
 Two roles are configured for this project: __manager__ and __sales__
+
+Please use the authentication tokens below for testing. Note that there is expiration time for both tokens, please contact https://aresgtr.github.io/ for most updated tokens.
+
+### Manager Bearer Token:
+eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlBKOU1iQU1WRzZvRnlMUVVSdFB0cyJ9.eyJpc3MiOiJodHRwczovL3poYW5ncWkuYXV0aDAuY29tLyIsInN1YiI6ImF1dGgwfDVlZTFjMmQ0ZWUyYmU0MDAxM2ZjZGU3NiIsImF1ZCI6ImNhcHN0b25lIiwiaWF0IjoxNTkyNTk2MTg5LCJleHAiOjE1OTI2ODI1ODksImF6cCI6IjBVTFNDZ3NDM2RVOEY5UHNvUmk3bmEzejRTVzFBaUxEIiwic2NvcGUiOiIiLCJwZXJtaXNzaW9ucyI6WyJkZWxldGU6Y3VzdG9tZXJzIiwiZGVsZXRlOmdhbWVzIiwiZ2V0OmN1c3RvbWVycyIsImdldDpnYW1lcyIsImdldDp0cmFuc2FjdGlvbnMiLCJwYXRjaDpjdXN0b21lcnMiLCJwYXRjaDpnYW1lcyIsInBvc3Q6Y3VzdG9tZXJzIiwicG9zdDpnYW1lcyIsInBvc3Q6dHJhbnNhY3Rpb25zIl19.JP93WeYyV-PvDSRkOPGmB0AkjE2LHcgAqb96dq-xcGJvIVgwb3VNWKcSGrapVyRtXTB11DhZF1zMcxiVLbUXKqh57HdyTd97JXi_RhXM2itH3ViI5jn6qrghhfaAl1pNo1MSSR8lAlIiocFatSIH5-Zh0-8Ouwk2CdstIShY45RTxLr-1FRW22yWjVxrFvbWAKGaOjMqFGfVsxlabzybRdNBk_oNySfQIKXOYiiJvNpE-wcDaQfpAUDfY3YP0IsjsBEe4YcEZIT0_zcoNicSi9M8eUrwJPwy01Kz39CQdH2kBJAvstlJIgA2doxkAZUWgDvPjvVT_0Ks7CbFZb7lsQ
+
+### Sales Bearer Token:
+eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlBKOU1iQU1WRzZvRnlMUVVSdFB0cyJ9.eyJpc3MiOiJodHRwczovL3poYW5ncWkuYXV0aDAuY29tLyIsInN1YiI6ImF1dGgwfDVlZTJiMjkwNzZmNjY5MDAxMzYzOGE0YSIsImF1ZCI6ImNhcHN0b25lIiwiaWF0IjoxNTkyNTk2MjU3LCJleHAiOjE1OTI2ODI2NTcsImF6cCI6IjBVTFNDZ3NDM2RVOEY5UHNvUmk3bmEzejRTVzFBaUxEIiwic2NvcGUiOiIiLCJwZXJtaXNzaW9ucyI6WyJnZXQ6Y3VzdG9tZXJzIiwiZ2V0OmdhbWVzIiwicGF0Y2g6Y3VzdG9tZXJzIiwicG9zdDpjdXN0b21lcnMiLCJwb3N0OnRyYW5zYWN0aW9ucyJdfQ.jUuw-ADVHrHBmBk2cQxKvDJ_qiGIthLWP_HesAGCdoVcAQx93SBeS4s6nNheNBDtcDmTyBZ3k-Ep7OW78JrnlWSdE9B5Pnmy3lCfmWIWs0bZWKZqcP2CCodIKFRSoLvxTKx68pULyxSjSJNwmiWAXiO51YF75rkji8gedSRf6U0KakouaOtYqa2mk_Kvd1l7SFZa8un-kFVlUDnpToVbQBV1-psqCBXEqP_BUdGmts0bT8Qmu3CMvidtkbf_mtTPEupD947KUTxzbAbHYebr6VA43_ZkSckDcLIHs7uOVZNoeuvx5PTv6ueX5tRygqwkvRSRJ2gEE0cwLnmM21QXZg
 
 ## Error Handling
 
