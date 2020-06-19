@@ -29,9 +29,11 @@ class Game(db.Model):
     platforms = Column(ARRAY(String))
     review_score = Column(Float)
     genre = Column(ARRAY(String))
-    transaction = db.relationship("Transaction", backref="Game", lazy='dynamic')
+    transaction = db.relationship("Transaction", backref="Game",
+                                  lazy='dynamic')
 
-    def __init__(self, name, developers, publishers, release_date, platforms, review_score, genre):
+    def __init__(self, name, developers, publishers, release_date, platforms,
+                 review_score, genre):
         self.name = name
         self.developers = developers
         self.publishers = publishers
@@ -74,7 +76,8 @@ class Customer(db.Model):
     phone = Column(String)
     country = Column(String)
     state = Column(String)
-    transaction = db.relationship("Transaction", backref="Customer", lazy='dynamic')
+    transaction = db.relationship("Transaction", backref="Customer",
+                                  lazy='dynamic')
 
     def __init__(self, first_name, last_name, email, phone, country, state):
         self.first_name = first_name

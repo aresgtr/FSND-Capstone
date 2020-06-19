@@ -10,6 +10,10 @@ def create_app(test_config=None):
     setup_db(app)
     CORS(app)
 
+    @app.route('/')
+    def root_route():
+        return 'Welcome to Capstone Game Store'
+
     @app.route('/games')
     def retrieve_games():
         game_query = Game.query.order_by(Game.id).all()
@@ -55,7 +59,7 @@ def create_app(test_config=None):
 
             return retrieve_games()
 
-        except:
+        except Exception:
             abort(422)
 
     @app.route('/games/<int:id>', methods=['PATCH'])
@@ -116,7 +120,7 @@ def create_app(test_config=None):
 
             return retrieve_games()
 
-        except:
+        except Exception:
             abort(422)
 
     @app.route('/customers')
@@ -165,7 +169,7 @@ def create_app(test_config=None):
 
             return retrieve_customers()
 
-        except:
+        except Exception:
             abort(422)
 
     @app.route('/customers/<int:id>', methods=['PATCH'])
@@ -222,7 +226,7 @@ def create_app(test_config=None):
 
             return retrieve_customers()
 
-        except:
+        except Exception:
             abort(422)
 
     @app.route('/transactions')
@@ -232,7 +236,8 @@ def create_app(test_config=None):
 
         transaction_query = Transaction.query.order_by(Transaction.id).all()
 
-        transactions = [transaction.format() for transaction in transaction_query]
+        transactions = \
+            [transaction.format() for transaction in transaction_query]
 
         return jsonify({
             'success': True,
@@ -252,13 +257,15 @@ def create_app(test_config=None):
         game_id = body.get('game_id', None)
         customer_id = body.get('customer_id', None)
 
-        if (time is None) or (amount is None) or (game_id is None) or (customer_id is None):
+        if (time is None) or (amount is None) or (game_id is None) or (
+                customer_id is None):
             abort(422)
 
         review = body.get('review', None)
 
         game = Game.query.filter(Game.id == game_id).one_or_none()
-        customer = Customer.query.filter(Customer.id == customer_id).one_or_none()
+        customer = Customer.query.filter(
+            Customer.id == customer_id).one_or_none()
 
         if (game is None) or (customer is None):
             abort(422)
@@ -275,7 +282,7 @@ def create_app(test_config=None):
 
             return retrieve_transactions()
 
-        except:
+        except Exception:
             abort(422)
 
     # Error Handling

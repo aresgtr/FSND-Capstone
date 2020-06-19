@@ -39,7 +39,8 @@ class CapstoneTestCase(unittest.TestCase):
     def setUp(self):
         self.app = create_app()
         self.client = self.app.test_client
-        self.database_path = 'postgresql://postgres:password@localhost:5432/capstone_test'
+        self.database_path = \
+            'postgresql://postgres:password@localhost:5432/capstone_test'
         setup_db(self.app, self.database_path)
 
         # binds the app to the current context
@@ -67,15 +68,20 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(data['num_of_games'], 5)
 
     def test02_insert_game_sales(self):
-        res = self.client().post('/games', headers={"Authorization": "Bearer {}".format(self.sales)}, json=game_to_insert)
+        res = self.client().post('/games', headers={
+            "Authorization": "Bearer {}".format(self.sales)},
+                                 json=game_to_insert)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 403)
         self.assertFalse(data['success'])
-        self.assertEqual(data['message'], 'action not permitted or authentication fails')
+        self.assertEqual(data['message'],
+                         'action not permitted or authentication fails')
 
     def test03_insert_game_manager(self):
-        res = self.client().post('/games', headers={"Authorization": "Bearer {}".format(self.manager)}, json=game_to_insert)
+        res = self.client().post('/games', headers={
+            "Authorization": "Bearer {}".format(self.manager)},
+                                 json=game_to_insert)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -92,12 +98,14 @@ class CapstoneTestCase(unittest.TestCase):
             ]
         }
 
-        res = self.client().patch('/games/6', headers={"Authorization": "Bearer {}".format(self.sales)}, json=body)
+        res = self.client().patch('/games/6', headers={
+            "Authorization": "Bearer {}".format(self.sales)}, json=body)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 403)
         self.assertFalse(data['success'])
-        self.assertEqual(data['message'], 'action not permitted or authentication fails')
+        self.assertEqual(data['message'],
+                         'action not permitted or authentication fails')
 
     def test05_update_game_manager(self):
         body = {
@@ -108,7 +116,8 @@ class CapstoneTestCase(unittest.TestCase):
             ]
         }
 
-        res = self.client().patch('/games/6', headers={"Authorization": "Bearer {}".format(self.manager)}, json=body)
+        res = self.client().patch('/games/6', headers={
+            "Authorization": "Bearer {}".format(self.manager)}, json=body)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -116,15 +125,18 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(data['games'][5]['name'], 'Halo Four')
 
     def test06_delete_game_sales(self):
-        res = self.client().delete('/games/6', headers={"Authorization": "Bearer {}".format(self.sales)})
+        res = self.client().delete('/games/6', headers={
+            "Authorization": "Bearer {}".format(self.sales)})
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 403)
         self.assertFalse(data['success'])
-        self.assertEqual(data['message'], 'action not permitted or authentication fails')
+        self.assertEqual(data['message'],
+                         'action not permitted or authentication fails')
 
     def test07_delete_game_manager(self):
-        res = self.client().delete('/games/6', headers={"Authorization": "Bearer {}".format(self.manager)})
+        res = self.client().delete('/games/6', headers={
+            "Authorization": "Bearer {}".format(self.manager)})
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -133,7 +145,8 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(data['num_of_games'], 5)
 
     def test08_404_delete_game_not_exist(self):
-        res = self.client().delete('/games/999', headers={"Authorization": "Bearer {}".format(self.manager)})
+        res = self.client().delete('/games/999', headers={
+            "Authorization": "Bearer {}".format(self.manager)})
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 404)
@@ -146,10 +159,12 @@ class CapstoneTestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 401)
         self.assertFalse(data['success'])
-        self.assertEqual(data['message'], 'action not permitted or authentication fails')
+        self.assertEqual(data['message'],
+                         'action not permitted or authentication fails')
 
     def test10_retrieve_customers_sales(self):
-        res = self.client().get('/customers', headers={"Authorization": "Bearer {}".format(self.sales)})
+        res = self.client().get('/customers', headers={
+            "Authorization": "Bearer {}".format(self.sales)})
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -159,7 +174,8 @@ class CapstoneTestCase(unittest.TestCase):
 
     #
     def test11_retrieve_customers_manager(self):
-        res = self.client().get('/customers', headers={"Authorization": "Bearer {}".format(self.manager)})
+        res = self.client().get('/customers', headers={
+            "Authorization": "Bearer {}".format(self.manager)})
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -172,7 +188,8 @@ class CapstoneTestCase(unittest.TestCase):
             "email": "123@example.com"
         }
 
-        res = self.client().post('/customers', headers={"Authorization": "Bearer {}".format(self.manager)}, json=body)
+        res = self.client().post('/customers', headers={
+            "Authorization": "Bearer {}".format(self.manager)}, json=body)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 422)
@@ -189,7 +206,9 @@ class CapstoneTestCase(unittest.TestCase):
             "state": "A part of Mars"
         }
 
-        res = self.client().post('/customers', headers={"Authorization": "Bearer {}".format(self.manager)}, json=customer_to_insert)
+        res = self.client().post('/customers', headers={
+            "Authorization": "Bearer {}".format(self.manager)},
+                                 json=customer_to_insert)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -203,7 +222,8 @@ class CapstoneTestCase(unittest.TestCase):
             "country": "This is Mars"
         }
 
-        res = self.client().patch('/customers/4', headers={"Authorization": "Bearer {}".format(self.manager)}, json=body)
+        res = self.client().patch('/customers/4', headers={
+            "Authorization": "Bearer {}".format(self.manager)}, json=body)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -216,7 +236,8 @@ class CapstoneTestCase(unittest.TestCase):
             "country": "This is Mars"
         }
 
-        res = self.client().patch('/customers/999', headers={"Authorization": "Bearer {}".format(self.manager)}, json=body)
+        res = self.client().patch('/customers/999', headers={
+            "Authorization": "Bearer {}".format(self.manager)}, json=body)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 404)
@@ -224,7 +245,8 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(data['message'], 'not found')
 
     def test16_delete_customer(self):
-        res = self.client().delete('/customers/4', headers={"Authorization": "Bearer {}".format(self.manager)})
+        res = self.client().delete('/customers/4', headers={
+            "Authorization": "Bearer {}".format(self.manager)})
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -233,7 +255,8 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(data['num_of_customers'], 3)
 
     def test17_delete_customer_not_exist(self):
-        res = self.client().delete('/customers/999', headers={"Authorization": "Bearer {}".format(self.manager)})
+        res = self.client().delete('/customers/999', headers={
+            "Authorization": "Bearer {}".format(self.manager)})
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 404)
@@ -241,15 +264,18 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(data['message'], 'not found')
 
     def test18_retrieve_transactions_sales(self):
-        res = self.client().get('/transactions', headers={"Authorization": "Bearer {}".format(self.sales)})
+        res = self.client().get('/transactions', headers={
+            "Authorization": "Bearer {}".format(self.sales)})
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 403)
         self.assertFalse(data['success'])
-        self.assertEqual(data['message'], 'action not permitted or authentication fails')
+        self.assertEqual(data['message'],
+                         'action not permitted or authentication fails')
 
     def test19_retrieve_transactions_manager(self):
-        res = self.client().get('/transactions', headers={"Authorization": "Bearer {}".format(self.manager)})
+        res = self.client().get('/transactions', headers={
+            "Authorization": "Bearer {}".format(self.manager)})
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -265,7 +291,9 @@ class CapstoneTestCase(unittest.TestCase):
             "customer_id": 3
         }
 
-        res = self.client().post('/transactions', headers={"Authorization": "Bearer {}".format(self.manager)}, json=transaction)
+        res = self.client().post('/transactions', headers={
+            "Authorization": "Bearer {}".format(self.manager)},
+                                 json=transaction)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -281,7 +309,9 @@ class CapstoneTestCase(unittest.TestCase):
             "customer_id": 3
         }
 
-        res = self.client().post('/transactions', headers={"Authorization": "Bearer {}".format(self.manager)}, json=transaction)
+        res = self.client().post('/transactions', headers={
+            "Authorization": "Bearer {}".format(self.manager)},
+                                 json=transaction)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 422)
